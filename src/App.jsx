@@ -19,11 +19,9 @@ function App() {
             );
 
             const proposalsId = Array.from(
-                { length: proposalCount },
+                { length: proposalCount - 1 },
                 (_, i) => i + 1
             );
-
-            proposalsId.pop();
 
             console.log("proposalsId: ", proposalsId);
 

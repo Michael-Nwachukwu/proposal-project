@@ -13,7 +13,7 @@ export const liskSepoliaNetwork = {
 };
 
 // 1. Get projectId
-const projectId = import.meta.env.VITE_APPKIT_PROJECT_ID;
+const projectId = import.meta.env.VITE_APP_PROJECT_ID;
 
 // 2. Set the networks
 const networks = [liskSepoliaNetwork, sepolia];
