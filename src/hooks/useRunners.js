@@ -14,6 +14,7 @@ const useRunners = () => {
 
     useEffect(() => {
         if (!provider) return setSigner(null);
+        if (!provider) return setSigner(null);
         provider.getSigner().then((newSigner) => {
             if (!signer) return setSigner(newSigner);
             if (newSigner === signer) return;
