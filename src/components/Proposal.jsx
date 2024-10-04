@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Text } from "@radix-ui/themes";
 import { formatEther } from "ethers";
+import useVoting from "../hooks/useVoting";
 
 const Proposal = ({
     description,
@@ -8,9 +9,11 @@ const Proposal = ({
     votecount,
     deadline,
     executed,
-    handleVote,
     id
 }) => {
+
+    const handleVote = useVoting();
+
     return (
         <Box className="bg-slate-400 rounded-md shadow-sm p-4 w-96">
             <Text className="text-2xl mb-4">Proposals</Text>

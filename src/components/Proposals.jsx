@@ -1,9 +1,7 @@
 import { Flex, Text } from "@radix-ui/themes";
 import Proposal from "./Proposal";
-import useVoting from "../hooks/useVoting";
 
-const Proposals = ({ proposals, id, handleVote }) => {
-    // const handleVote = useVoting(id);
+const Proposals = ({ proposals }) => {
     return (
         <Flex className="w-full flex gap-4 flex-wrap">
             {proposals.length === 0 ? (
@@ -27,7 +25,6 @@ const Proposals = ({ proposals, id, handleVote }) => {
                             executed={executed}
                             minRequiredVote={minRequiredVote}
                             votecount={votecount}
-                            handleVote={handleVote}
                             id={proposalId}
                         />
                     )

@@ -15,7 +15,7 @@ const multicallAbi = [
 ];
 
 function App() {
-    // get contract from use contracts, pass true to get contract with signer provider
+    
     const readOnlyProposalContract = useContract(true);
 
     const { readOnlyProvider } = useRunners();
@@ -75,24 +75,8 @@ function App() {
         }
     }, [readOnlyProposalContract, readOnlyProvider]);
 
-
-    const handleVote = async (proposalId) => {
-        try {
-            const tx = await readOnlyProposalContract.vote(proposalId);
-            const reciept = await tx.wait();
-            if (reciept.status === 1) {
-                toast.success("Voted successfully");
-                return;
-            }
-            toast.error("Failed to vote");
-            return;
-        } catch (error) {
-            console.error("error while voting: ", error);
-            toast.error("Voting error");
-        }
-    };
-
     useEffect(() => {
+
         if (readOnlyProposalContract) {
 
             const listener = (proposalId, description, amount, minRequiredVote, voteCount, deadline, executed) => {
@@ -110,6 +94,18 @@ function App() {
                 ]);
             };
 
+            readOnlyProposalContract.on("ProposalCreated", listener);
+
+            return () => {
+                readOnlyProposalContract.off("ProposalCreated", listener);
+            };
+
+        }
+    }, []);
+
+    useEffect(() => {
+
+        if (readOnlyProposalContract) {
             // listen to Voted event
             const votedListener = (proposalId) => {
                 setProposals((proposals) => {
@@ -125,23 +121,21 @@ function App() {
                     return updatedProposals;
                 });
             };
-
-            readOnlyProposalContract.on("ProposalCreated", listener);
+    
             readOnlyProposalContract.on("Voted", votedListener);
-
-
+    
+    
             return () => {
-                readOnlyProposalContract.off("ProposalCreated", listener);
                 readOnlyProposalContract.off("Voted", votedListener);
             };
-
         }
-    }, [readOnlyProposalContract]);
+
+    }, [])
 
 
     useEffect(() => {
         fetchProposals();
-    }, []);
+    }, [proposals]);
 
 
     return (
@@ -149,7 +143,7 @@ function App() {
             <Box className="flex justify-end p-4">
                 <CreateProposalModal />
             </Box>
-            <Proposals proposals={proposals} handleVote={handleVote} />
+            <Proposals proposals={proposals} />
         </Layout>
     );
 }
